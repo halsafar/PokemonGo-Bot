@@ -35,7 +35,7 @@ class EventManager:
         parameters = self._registered_events[event]
         for k, v in kwargs.iteritems():
             if k not in parameters:
-                raise EventMalformedException("Event %s does not have parameter %s" % (event, k))
+                raise EventMalformedException("Event %s does not require parameter %s" % (event, k))
 
         # send off to the handlers
         for handler in self._handlers:
