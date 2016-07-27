@@ -16,11 +16,10 @@ class EventHandler:
         raise NotImplementedError("Please implement")
 
 
-class Events:
+class EventManager:
     def __init__(self):
         self._registered_events = dict()
         self._handlers = []
-
 
     def add_handler(self, event_handler):
         self._handlers.append(event_handler)
