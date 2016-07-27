@@ -16,11 +16,13 @@ from pgoapi.utilities import f2i
 import logger
 from cell_workers import CatchVisiblePokemonWorker, PokemonCatchWorker, SeenFortWorker, MoveToFortWorker, InitialTransferWorker, EvolveAllWorker, RecycleItemsWorker
 from cell_workers.utils import distance, get_cellid, encode, i2f
+from event_handlers import LoggingHandler
 from human_behaviour import sleep
 from item_list import Item
 from metrics import Metrics
 from spiral_navigator import SpiralNavigator
 from worker_result import WorkerResult
+from events import EventManager
 
 
 class PokemonGoBot(object):
@@ -36,6 +38,9 @@ class PokemonGoBot(object):
         self.item_list = json.load(open(os.path.join('data', 'items.json')))
         self.metrics = Metrics(self)
         self.latest_inventory = None
+        self.event_manager = EventManager()
+        self.event_manager.add_handler(LoggingHandler())
+        self.event_manager.register_event("location", parameters=['lat', 'lng'])
 
     def start(self):
         self._setup_logging()
@@ -119,6 +124,8 @@ class PokemonGoBot(object):
                     }, outfile)
         except IOError as e:
             logger.log('[x] Error while opening location file: %s' % e, 'red')
+
+        self.event_manager.emit("location", lat=lat, lng=lng)
 
         user_data_lastlocation = os.path.join('data', 'last-location-%s.json' % (self.config.username))
         try:

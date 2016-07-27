@@ -1,5 +1,6 @@
+from events import EventHandler
 
 
-class LoggingHandler:
-    def __init__(self):
-        pass
+class LoggingHandler(EventHandler):
+    def handle_event(self, event, kwargs):
+        print "%s:%s" % (event, kwargs)
