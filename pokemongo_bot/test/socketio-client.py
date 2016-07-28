@@ -15,11 +15,15 @@ class Namespace(BaseNamespace):
     def on_location(self, msg):
         print('test: ', msg)
 
+    def on_player_info(self, dict):
+        print('player_info: ', dict)
+
 
 if __name__ == "__main__":
     try:
         with SocketIO('localhost', 8000, Namespace) as socketIO:
             while True:
-                socketIO.wait_for_callbacks(seconds=1)
+                socketIO.wait(seconds=1)
+
     except (KeyboardInterrupt, SystemExit):
         print "Exiting"
