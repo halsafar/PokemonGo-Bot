@@ -10,7 +10,7 @@ class SocketIoHandler(EventHandler):
         self.sio_runner = sio_runner
 
     def handle_event(self, event, kwargs):
-        print("%s:%s" % (event, kwargs))
+        print("SocketIoHandler-%s:%s" % (event, kwargs))
         sio_runner.sio.emit(event, data=kwargs)
 
 
