@@ -46,6 +46,7 @@ class PokemonGoBot(object):
         self.sio_runner.start_listening_async()
         self.event_manager.add_handler(SocketIoHandler(self.sio_runner))
         self.event_manager.register_event("location", parameters=['lat', 'lng'])
+        self.event_manager.register_event("player_info", parameters=['player'])
 
     def start(self):
         self._setup_logging()
@@ -538,6 +539,7 @@ class PokemonGoBot(object):
     def get_player_info(self):
         response_dict = self.get_inventory()
         if 'responses' in response_dict:
+            self.event_manager.emit("player_info", player=response_dict)
             if 'GET_INVENTORY' in response_dict['responses']:
                 if 'inventory_delta' in response_dict['responses'][
                         'GET_INVENTORY']:
