@@ -23,7 +23,7 @@ if __name__ == "__main__":
     try:
         with SocketIO('localhost', 8000, Namespace) as socketIO:
             while True:
-                socketIO.wait(seconds=1)
+                socketIO.wait(seconds=5)
 
     except (KeyboardInterrupt, SystemExit):
         print "Exiting"
