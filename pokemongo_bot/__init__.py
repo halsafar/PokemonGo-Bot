@@ -20,9 +20,11 @@ from event_handlers import LoggingHandler
 from human_behaviour import sleep
 from item_list import Item
 from metrics import Metrics
+from pokemongo_bot.event_handlers.sio_runner import SocketIoRunner
+from pokemongo_bot.event_handlers.socketio_handler import SocketIoHandler
 from spiral_navigator import SpiralNavigator
 from worker_result import WorkerResult
-from events import EventManager
+from event_manager import EventManager
 
 
 class PokemonGoBot(object):
@@ -40,6 +42,9 @@ class PokemonGoBot(object):
         self.latest_inventory = None
         self.event_manager = EventManager()
         self.event_manager.add_handler(LoggingHandler())
+        self.sio_runner = SocketIoRunner('', 8000)
+        self.sio_runner.start_listening_async()
+        self.event_manager.add_handler(SocketIoHandler(self.sio_runner))
         self.event_manager.register_event("location", parameters=['lat', 'lng'])
 
     def start(self):
@@ -49,6 +54,7 @@ class PokemonGoBot(object):
         random.seed()
 
     def take_step(self):
+        #pass
         self.process_cells()
 
     def process_cells(self):

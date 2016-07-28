@@ -8,7 +8,7 @@ class EventMalformedException(Exception):
     pass
 
 
-class EventHandler:
+class EventHandler(object):
     def __init__(self):
         pass
 
@@ -16,7 +16,7 @@ class EventHandler:
         raise NotImplementedError("Please implement")
 
 
-class EventManager:
+class EventManager(object):
     def __init__(self):
         self._registered_events = dict()
         self._handlers = []
