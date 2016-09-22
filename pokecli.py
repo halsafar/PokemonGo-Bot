@@ -26,7 +26,6 @@ Author: tjado <https://github.com/tejado>
 """
 from __future__ import unicode_literals
 
-<<<<<<< HEAD
 import argparse
 import codecs
 import json
@@ -58,25 +57,10 @@ try:
 except ImportError:
     # Run `pip install -r requirements.txt` to fix this
     jsonlint = None
-=======
-## system imports
-from argparse import ArgumentParser
-from codecs import getwriter
-from json import load as read_json
-from os.path import isfile
-from time import sleep
-import logging
-import ssl
-import sys
-
-## user imports
-from bot import PokemonGoBot
->>>>>>> ab604452c2a0a72e13fa6d940fa55902d3b01466
 
 if sys.version_info >= (2, 7, 9):
     ssl._create_default_https_context = ssl._create_unverified_context
 
-<<<<<<< HEAD
 try:
     import pkg_resources
     pgoapi_version = pkg_resources.get_distribution("pgoapi").version
@@ -752,47 +736,6 @@ def init_config():
 
     if config.auth_service not in ['ptc', 'google']:
         logging.error("Invalid Auth service specified! ('ptc' or 'google')")
-=======
-def init_config():
-    parser = ArgumentParser()
-    config_file = "config.json"
-
-    # If config file exists, load variables from json
-    load = {}
-    if isfile(config_file):
-        with open(config_file) as data:
-            load.update(read_json(data))
-
-    # Read passed in Arguments
-    required = lambda x: not x in load
-    parser.add_argument("-a", "--auth_service", help="Auth Service ('ptc' or 'google')",
-        required=required("auth_service"))
-    parser.add_argument("-u", "--username", help="Username", required=required("username"))
-    parser.add_argument("-p", "--password", help="Password", required=required("password"))
-    parser.add_argument("-l", "--location", help="Location", required=required("location"))
-    parser.add_argument("-s", "--spinstop", help="SpinPokeStop", action='store_true')
-    parser.add_argument("-v", "--stats", help="Show Stats and Exit", action='store_true')
-    parser.add_argument("-w", "--walk", help="Walk instead of teleport with given speed (meters per second, e.g. 2.5)", type=float, default=2.5)
-    parser.add_argument("-c", "--cp",help="Set CP less than to transfer(DEFAULT 100)",default=100)
-
-    parser.add_argument("-k", "--gmapkey",help="Set Google Maps API KEY",type=str,default=None)
-    parser.add_argument("--maxsteps",help="Set the steps around your initial location(DEFAULT 5 mean 25 cells around your location)",type=int,default=5)
-
-    parser.add_argument("-d", "--debug", help="Debug Mode", action='store_true')
-    parser.add_argument("-t", "--test", help="Only parse the specified location", action='store_true')
-    parser.add_argument("-tl", "--transfer_list", help="Transfer these pokemons regardless cp(pidgey,drowzee,rattata)", type=str, default='')
-    parser.set_defaults(DEBUG=False, TEST=False)
-    config = parser.parse_args()
-    
-
-    # Passed in arguments shoud trump
-    for key in config.__dict__:
-        if key in load and config.__dict__[key] is None:
-            config.__dict__[key] = load[key]
-
-    if config.auth_service not in ['ptc', 'google']:
-        logging.error("Invalid Auth service ('%s') specified! ('ptc' or 'google')", config.auth_service)
->>>>>>> ab604452c2a0a72e13fa6d940fa55902d3b01466
         return None
 
     def task_configuration_error(flag_name):
@@ -802,7 +745,6 @@ def init_config():
             Read https://github.com/PokemonGoF/PokemonGo-Bot/wiki/Configuration-files#configuring-tasks for more information.
             """.format(flag_name))
 
-<<<<<<< HEAD
     old_flags = ['mode', 'catch_pokemon', 'spin_forts', 'forts_spin', 'hatch_eggs', 'release_pokemon', 'softban_fix',
                  'longer_eggs_first', 'evolve_speed', 'use_lucky_egg', 'item_filter', 'evolve_all', 'evolve_cp_min',
                  'max_steps', 'catch_throw_parameters.excellent_rate', 'catch_throw_parameters.great_rate',
@@ -894,48 +836,6 @@ def parse_unicode_str(string):
         return string.decode('utf8')
     except (UnicodeEncodeError, UnicodeDecodeError):
         return string
-=======
-def main():
-    # log settings
-    # log format
-    #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(module)10s] [%(levelname)5s] %(message)s')
-
-    sys.stdout = getwriter('utf8')(sys.stdout)
-    sys.stderr = getwriter('utf8')(sys.stderr)
-
-    # @eggins clean log
-    print '[x] Initializing PokemonGO Bot v1.0'
-    sleep(1)
-    print '[x] PokemonGo Bot [@PokemonGoF | @eggins | @crack00r | @ethervoid | /r/pokemongodev]'
-
-    config = init_config()
-    if not config:
-        return
-
-    if config.debug:
-        # log level for http request class
-        logging.getLogger("requests").setLevel(logging.WARNING)
-        # log level for main pgoapi class
-        logging.getLogger("pgoapi").setLevel(logging.INFO)
-        # log level for internal pgoapi class
-        logging.getLogger("rpc_api").setLevel(logging.INFO)
-
-    if config.debug:
-        logging.getLogger("requests").setLevel(logging.DEBUG)
-        logging.getLogger("pgoapi").setLevel(logging.DEBUG)
-        logging.getLogger("rpc_api").setLevel(logging.DEBUG)
-
-    print '[x] Configuration Initialized'
-
-    try:
-        bot = PokemonGoBot(config)
-        bot.start()
-
-        while True:
-            bot.take_step()
-    except KeyboardInterrupt:
-        print '[ USER ABORTED, EXITING.. ]'
->>>>>>> ab604452c2a0a72e13fa6d940fa55902d3b01466
 
 if __name__ == '__main__':
     main()
